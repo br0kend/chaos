@@ -56,13 +56,10 @@ def get_pr_comment_votes_all(api, urn, pr_num, since):
         # ------------|---------------|---------------
         # old comment | doesn't count | doesn't count
         # new comment | not possible  | counts
-        '''
-        Removed in response to issue #21
         reaction_votes = get_comment_reaction_votes(api, urn,
                 comment["id"], since)
         for reaction_owner, vote in reaction_votes:
             yield reaction_owner, vote
-        '''
 
     # we consider the pr itself to be the "first comment."  in the web ui, it
     # looks like a comment, complete with reactions, so let's treat it like a
@@ -118,15 +115,8 @@ def get_vote_weight(api, username):
     created = arrow.get(user["created_at"])
     age = (now - created).total_seconds()
     old_enough_to_vote = age >= settings.MIN_VOTER_AGE
-    age_weight = 1.0 if old_enough_to_vote else 0.0
-
-    # here we use some basic social proof to weight their vote.  the theory here
-    # is that a user's followers has a log relationship to their coding
-    # judgement?  there's probably something better to use here
-    followers = user["followers"]
-    social_weight = log(followers + 1, settings.FOLLOWER_LOG_BASE)
-
-    weight = age_weight * social_weight
+    weight = 1.0 if old_enough_to_vote else 0.0
+    # Valid votes need to be equal, for a fair system to exist.
     return weight
 
 
