@@ -116,14 +116,7 @@ def get_vote_weight(api, username):
     age = (now - created).total_seconds()
     old_enough_to_vote = age >= settings.MIN_VOTER_AGE
     age_weight = 1.0 if old_enough_to_vote else 0.0
-
-    # here we use some basic social proof to weight their vote.  the theory here
-    # is that a user's followers has a log relationship to their coding
-    # judgement?  there's probably something better to use here
-    followers = user["followers"]
-    social_weight = log(followers + 1, settings.FOLLOWER_LOG_BASE)
-
-    weight = age_weight * social_weight
+    # Valid votes need to be equal, for a fair system to exist.
     return weight
 
 
