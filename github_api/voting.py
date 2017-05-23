@@ -124,9 +124,8 @@ def get_vote_weight(api, username):
     # is that a user's followers has a log relationship to their coding
     # judgement?  there's probably something better to use here
     followers = user["followers"]
-    social_weight = log(followers + 1, settings.FOLLOWER_LOG_BASE)
+    weight = log(followers + 1, settings.FOLLOWER_LOG_BASE)
 
-    weight = age_weight * social_weight
     return weight
 
 
